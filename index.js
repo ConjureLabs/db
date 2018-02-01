@@ -1,5 +1,4 @@
 const { Pool } = require('pg');
-const { ContentError } = require('err');
 
 // these will be set upon connection
 let pool;
