@@ -13,11 +13,6 @@
   },
   "author": "",
   "license": "UNLICENSED",
-  "devDependencies": {
-    "babel-eslint": "8.0.1",
-    "eslint": "4.10.0",
-    "jscs": "3.0.7"
-  },
   "bugs": {
     "url": "https://github.com/ConjureLabs/db/issues"
   },
@@ -25,5 +20,10 @@
   "dependencies": {
     "err": "github:ConjureLabs/err",
     "pg": "7.4.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "8.0.1",
+    "eslint": "4.10.0",
+    "jscs": "3.0.7"
   }
 }
