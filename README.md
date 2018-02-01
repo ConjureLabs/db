@@ -3,7 +3,7 @@
 ### Install
 
 ```sh
-npm install db@ConjureLabs/db
+npm install --save db@ConjureLabs/db
 ```
 
 ### Usage
