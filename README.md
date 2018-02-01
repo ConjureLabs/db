@@ -22,7 +22,7 @@ require('db').init({
 });
 ```
 
-All queries will be paused util you pass this config.
+All queries will be paused until you pass this config.
 
 Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `init()` is pushed directly into a `new Pool(...config)`.
 
