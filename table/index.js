@@ -23,7 +23,7 @@ module.exports = class DatabaseTable {
   }
 
   [mapRowInstances](queryResult) {
-    const DatabaseRow = require('row');
+    const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
       return new DatabaseRow(this.tableName, row);
     });
