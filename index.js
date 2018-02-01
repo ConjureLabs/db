@@ -36,6 +36,7 @@ function init(config, logger = function() {}) {
   queryLogger = process.env === 'production' ? sql => logger(sql) : logger;
   haveConfig(); // will flush queue of any pending promises
 }
+module.exports.init = init;
 
 async function query(...args) {
   // pause until connection config is sent in
@@ -52,5 +53,4 @@ async function query(...args) {
 
   return result;
 }
-
 module.exports.query = query;

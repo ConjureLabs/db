@@ -1,0 +1,25 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "classes for easier access and manipulation of postgres data",
+  "main": "index.js",
+  "scripts": {
+    "lint": "bash ./bash/lint.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConjureLabs/db.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "babel-eslint": "8.0.1",
+    "eslint": "4.10.0",
+    "jscs": "3.0.7"
+  },
+  "bugs": {
+    "url": "https://github.com/ConjureLabs/db/issues"
+  },
+  "homepage": "https://github.com/ConjureLabs/db#readme"
+}
