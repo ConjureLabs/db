@@ -23,16 +23,28 @@ connection.init({
 });
 ```
 
-Internally this repo uses [node-postgres / pg](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `connection.init` is pushed directly into a `new Pool(...config)`.
+All queries will be paused util you pass this config.
+
+Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `connection.init` is pushed directly into a `new Pool(...config)`.
 
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
 
 ```js
-const connection = require('db/connection');
-connection.init(...config, (sql, placeholderValues) => { });
+const { init } = require('db');
+init(...config, (sql, placeholderValues) => { });
 ```
 
-**Do not log `placeholderValues` in production**.
+If in production, `placeholderValues` will not be sent to this method.
+
+You can directly query the db (as documented in [node-postgres](http://github.com/brianc/node-postgres)) if you wish.
+
+```js
+const { query } = require('db');
+
+// this assumes you ran `init(...config)` already
+
+const result = await query('SELECT * FROM users WHERE id = $1', userId);
+```
 
 See further docs, for accessing data:
 
