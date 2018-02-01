@@ -11,8 +11,7 @@ npm install db@ConjureLabs/db
 You'll first need to init the db connection, with your own config.
 
 ```js
-const connection = require('db/connection');
-connection.init({
+require('db').init({
   user: process.env.PROJECT_DB_USERNAME,
   database: process.env.PROJECT_DB_DATABASE,
   password: process.env.PROJECT_DB_PASSWORD,
@@ -25,7 +24,7 @@ connection.init({
 
 All queries will be paused util you pass this config.
 
-Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `connection.init` is pushed directly into a `new Pool(...config)`.
+Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `init()` is pushed directly into a `new Pool(...config)`.
 
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
 
