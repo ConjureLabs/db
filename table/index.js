@@ -116,6 +116,11 @@ module.exports = class DatabaseTable {
   static async [staticProxy](methodName, originalArgs /* = [ tableName, [constraints, ...,]] */) {
     const args = Array.prototype.slice.call(originalArgs);
     const tableName = args.shift();
+
+    if (typeof tableName !== 'string') {
+      throw new ContentError(`DatabaseTable.${methodName} requires the first argument to be a table name`);
+    }
+
     const instance = new DatabaseTable(tableName);
     return await instance[methodName].apply(instance, args);
   }
