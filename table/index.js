@@ -19,8 +19,23 @@ class DatabaseQueryCast extends DatabaseQueryLiteral {
   }
 }
 
+const upperLettersMatch = /[A-Z]+/g;
 const tableOptions = {
-  transformCamelCase: false
+  transformCamelCase: false,
+  transformer: name => {
+    return name
+      .replace(upperLettersMatch, (match, indx, baseString) => {
+        const replacement = match.length === 1 ? match :
+          match.length + indx === baseString.length ? match :
+          match.substr(0, match.length - 1) + '_' + match.substr(-1);
+
+        return (
+          (indx === 0 ? '' : '_') +
+          replacement
+        );
+      })
+      .toLowerCase();
+  }
 };
 
 module.exports = class DatabaseTable {
@@ -65,7 +80,7 @@ module.exports = class DatabaseTable {
       return name;
     }
 
-    return name;
+    return DatabaseTable.options.transformer(name);
   }
 
   async select(...constraints) {
