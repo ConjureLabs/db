@@ -307,4 +307,5 @@ row.addedFromService = 'Google';
 row.save(); // `added_from_service` is set to 'Google'
 ```
 
+Note that a column name like `account_id` will be represented as `accountId`, not `accountID`.
 </details>
