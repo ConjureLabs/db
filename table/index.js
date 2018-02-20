@@ -70,13 +70,13 @@ module.exports = class DatabaseTable {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
       if (DatabaseTable.options.transformCamelCase) {
-        row = snakeToCamelCase(row);
+        row = this[transformObj](row, snakeToCamelCase);
       }
       return new DatabaseRow(this.tableName, row);
     });
   }
 
-  [transformObj](pairs) {
+  [transformObj](pairs, transformerUsed = camelToSnakeCase) {
     if (!DatabaseTable.options.transformCamelCase) {
       return pairs;
     }
@@ -84,19 +84,19 @@ module.exports = class DatabaseTable {
     const result = {};
 
     for (let key in pairs) {
-      const newKey = this[transformName](key);
+      const newKey = this[transformName](key, transformerUsed);
       result[newKey] = pairs[key];
     }
 
     return result;
   }
 
-  [transformName](name) {
+  [transformName](name, transformerUsed = camelToSnakeCase) {
     if (!DatabaseTable.options.transformCamelCase) {
       return name;
     }
 
-    return camelToSnakeCase(name);
+    return transformerUsed(name);
   }
 
   async select(...constraints) {
