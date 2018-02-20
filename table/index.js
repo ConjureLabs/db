@@ -2,6 +2,8 @@ const { UnexpectedError, ContentError } = require('err');
 
 const mapRowInstances = Symbol('maps query result rows to DatabaseRow instances');
 const staticProxy = Symbol('static method, proxy to instance method');
+const transformName = Symbol('transform a single sql resource name');
+const transformObj = Symbol('transform column key value pairs');
 
 // used to mark a string that should not be wrapped in an escaped string
 class DatabaseQueryLiteral extends String {
@@ -17,22 +19,87 @@ class DatabaseQueryCast extends DatabaseQueryLiteral {
   }
 }
 
+const upperLettersMatch = /[A-Z]+/g;
+const underscoreMatch = /_+[a-z]/g;
+const tableOptions = {
+  transformCamelCase: false,
+  transformerForSql: name => {
+    return name
+      .replace(upperLettersMatch, (match, indx, baseString) => {
+        const replacement = match.length === 1 ? match :
+          match.length + indx === baseString.length ? match :
+          match.substr(0, match.length - 1) + '_' + match.substr(-1);
+
+        return (
+          (indx === 0 ? '' : '_') +
+          replacement
+        );
+      })
+      .toLowerCase();
+  },
+  transformerForUser: name => {
+    // expecting lower_snake_cased names form postgres
+    return name.replace(underscoreMatch, match => {
+      return match.substr(-1).toUpperCase();
+    });
+  }
+};
+
 module.exports = class DatabaseTable {
   constructor(tableName) {
-    this.tableName = tableName;
+    this.tableName = this[transformName](tableName);
+  }
+
+  static get options() {
+    return Object.assign({}, tableOptions);
+  }
+
+  static set options(newOpts) {
+    for (let key in newOpts) {
+      tableOptions[key] = newOpts[key];
+    }
   }
 
   [mapRowInstances](queryResult) {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
+      if (DatabaseTable.options.transformNames) {
+        row = DatabaseTable.options.transformerForUser(row);
+      }
       return new DatabaseRow(this.tableName, row);
     });
   }
 
+  [transformObj](pairs) {
+    if (!DatabaseTable.options.transformNames) {
+      return pairs;
+    }
+
+    const result = {};
+
+    for (let key in pairs) {
+      const newKey = this[transformName](key);
+      result[newKey] = pairs[key];
+    }
+
+    return result;
+  }
+
+  [transformName](name) {
+    if (!DatabaseTable.options.transformCamelCase) {
+      return name;
+    }
+
+    return DatabaseTable.options.transformForSql(name);
+  }
+
   async select(...constraints) {
+    // transformations
+    const transformedConstraints = constraints.map(obj => this[transformObj](obj));
+
     const { query } = require('../');
 
-    const { queryValues, whereClause } = generateWhereClause(constraints);
+    const { queryValues, whereClause } = generateWhereClause(transformedConstraints);
 
     const result = query(`SELECT * FROM ${this.tableName}${whereClause}`, queryValues);
     return this[mapRowInstances](await result);
@@ -43,11 +110,15 @@ module.exports = class DatabaseTable {
   }
 
   async update(updates, ...constraints) {
+    // transformations
+    const transformedUpdates = this[transformObj](updates);
+    const transformedConstraints = constraints.map(obj => this[transformObj](obj));
+
     const { query } = require('../');
 
     const queryValues = [];
-    const updatesSql = generateSqlKeyVals(', ', updates, queryValues);
-    const { whereClause } = generateWhereClause(constraints, queryValues);
+    const updatesSql = generateSqlKeyVals(', ', transformedUpdates, queryValues);
+    const { whereClause } = generateWhereClause(transformedConstraints, queryValues);
 
     const result = query(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause}`, queryValues);
     return this[mapRowInstances](await result);
@@ -58,9 +129,12 @@ module.exports = class DatabaseTable {
   }
 
   async delete(...constraints) {
+    // transformations
+    const transformedConstraints = constraints.map(obj => this[transformObj](obj));
+
     const { query } = require('../');
 
-    const { queryValues, whereClause } = generateWhereClause(constraints);
+    const { queryValues, whereClause } = generateWhereClause(transformedConstraints);
 
     const result = query(`DELETE FROM ${this.tableName}${whereClause}`, queryValues);
     return this[mapRowInstances](await result);
@@ -71,19 +145,22 @@ module.exports = class DatabaseTable {
   }
 
   async insert(...newRows) {
+    // transformations
+    const transformedNewRows = newRows.map(row => this[transformObj](row));
+
     const { query } = require('../');
 
-    if (!newRows.length) {
+    if (!transformedNewRows.length) {
       throw new UnexpectedError('There were no rows to insert');
     }
 
-    const columnNames = findAllColumnNames(newRows);
+    const columnNames = findAllColumnNames(transformedNewRows);
 
     if (columnNames.includes('id')) {
       throw new ContentError('Cannot insert a row that has .id');
     }
 
-    const { queryValues, valuesFormatted } = generateInsertValues(newRows, columnNames);
+    const { queryValues, valuesFormatted } = generateInsertValues(transformedNewRows, columnNames);
 
     const result = query(`INSERT INTO ${this.tableName}(${columnNames.join(', ')}) VALUES ${valuesFormatted} RETURNING *`, queryValues);
     return this[mapRowInstances](await result);
@@ -94,16 +171,23 @@ module.exports = class DatabaseTable {
   }
 
   async upsert(insertContent, updateContent, updateConstraints) {
+    // transformations
+    const transformedInsertContent = this[transformObj](insertContent);
+
     let result;
 
     try {
-      result = await this.insert(insertContent);
+      result = await this.insert(transformedInsertContent);
     } catch(err) {
       if (typeof err.message !== 'string' || err.message.substr(0, 13) !== 'duplicate key') {
         throw err;
       }
 
-      result = await this.update(updateContent, updateConstraints);
+      // transformations
+      const transformedUpdateContent = this[transformObj](updateContent);
+      const transformedUpdateConstraints = this[transformObj](transformedUpdateConstraints);
+
+      result = await this.update(transformedUpdateContent, transformedUpdateConstraints);
     }
 
     return this[mapRowInstances](result);
@@ -132,7 +216,7 @@ module.exports = class DatabaseTable {
   static cast(str, castTo) {
     return new DatabaseQueryCast(str, castTo);
   }
-};
+}
 
 function generateInsertValues(rows, columnNames, queryValues = []) {
   const insertAssignments = [];
