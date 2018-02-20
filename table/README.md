@@ -260,13 +260,13 @@ You can update options in a similar fashion.
 
 ```js
 DatabaseTable.options = {
-  transformNames: true
+  transformCamelCase: true
 };
 ```
 
 Note that this will only alter the option attributes you supply (it does not replace the `{}` of options), and will affect _all_ instances of `DatabaseTable` (not just new ones). So, you should do this before any other usage.
 
-##### Option: transform names
+##### Option: transform to camel case names
 
 Postgres table and column names look like this: `account_emails_by_date`. If you're like me, you typically set a var equal to `accountEmailsByDate` when working off of a table, but then have to convert it back to snake-cased when passing it back in.
 
@@ -274,7 +274,7 @@ You can have this module auto-transform names for you, to make life easier.
 
 ```js
 DatabaseTable.options = {
-  transformNames: true
+  transformCamelCase: true
 };
 ```
 

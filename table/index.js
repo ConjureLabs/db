@@ -20,29 +20,31 @@ class DatabaseQueryCast extends DatabaseQueryLiteral {
 }
 
 const upperLettersMatch = /[A-Z]+/g;
-const underscoreMatch = /_+[a-z]/g;
-const tableOptions = {
-  transformCamelCase: false,
-  transformerForSql: name => {
-    return name
-      .replace(upperLettersMatch, (match, indx, baseString) => {
-        const replacement = match.length === 1 ? match :
-          match.length + indx === baseString.length ? match :
-          match.substr(0, match.length - 1) + '_' + match.substr(-1);
+function camelToSnakeCase(name) {
+  return name
+    .replace(upperLettersMatch, (match, indx, baseString) => {
+      const replacement = match.length === 1 ? match :
+        match.length + indx === baseString.length ? match :
+        match.substr(0, match.length - 1) + '_' + match.substr(-1);
 
-        return (
-          (indx === 0 ? '' : '_') +
-          replacement
-        );
-      })
-      .toLowerCase();
-  },
-  transformerForUser: name => {
-    // expecting lower_snake_cased names form postgres
-    return name.replace(underscoreMatch, match => {
-      return match.substr(-1).toUpperCase();
-    });
-  }
+      return (
+        (indx === 0 ? '' : '_') +
+        replacement
+      );
+    })
+    .toLowerCase();
+}
+
+const underscoreMatch = /_+[a-z]/g;
+function snakeToCamelCase(name) {
+  // expecting lower_snake_cased names form postgres
+  return name.replace(underscoreMatch, match => {
+    return match.substr(-1).toUpperCase();
+  });
+}
+
+const tableOptions = {
+  transformCamelCase: false
 };
 
 module.exports = class DatabaseTable {
@@ -56,6 +58,10 @@ module.exports = class DatabaseTable {
 
   static set options(newOpts) {
     for (let key in newOpts) {
+      if (tableOptions[key] === undefined) {
+        continue;
+      }
+
       tableOptions[key] = newOpts[key];
     }
   }
@@ -64,7 +70,7 @@ module.exports = class DatabaseTable {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
       if (DatabaseTable.options.transformNames) {
-        row = DatabaseTable.options.transformerForUser(row);
+        row = snakeToCamelCase(row);
       }
       return new DatabaseRow(this.tableName, row);
     });
