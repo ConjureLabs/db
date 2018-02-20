@@ -51,7 +51,7 @@ module.exports = class DatabaseTable {
   }
 
   static get options() {
-    return tableOptions;
+    return Object.assign({}, tableOptions);
   }
 
   static set options(newOpts) {

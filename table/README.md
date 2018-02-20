@@ -247,3 +247,64 @@ const rows = await DatabaseTable.insert('account', {
   added: DatabaseTable.literal('NOW()')
 });
 ```
+
+#### Table options (global)
+
+There are some options baked directly into `DatabaseTable`. You can access options directly from the constructor.
+
+```js
+console.log(DatabaseTable.options); // { ... }
+```
+
+You can update options in a similar fashion.
+
+```js
+DatabaseTable.options = {
+  transformNames: true
+};
+```
+
+Note that this will only alter the option attributes you supply (it does not replace the `{}` of options), and will affect _all_ instances of `DatabaseTable` (not just new ones). So, you should do this before any other usage.
+
+##### Option: transform names
+
+Postgres table and column names look like this: `account_emails_by_date`. If you're like me, you typically set a var equal to `accountEmailsByDate` when working off of a table, but then have to convert it back to snake-cased when passing it back in.
+
+You can have this module auto-transform names for you, to make life easier.
+
+```js
+DatabaseTable.options = {
+  transformNames: true
+};
+```
+
+<details>
+
+Let's say you have the following table:
+
+```
+      Column        |           Type           |
+--------------------+--------------------------|
+ id                 | integer                  |
+ account            | integer                  |
+ email              | character varying(255)   |
+ added_from_service | character varying(255)   |
+ added              | timestamp with time zone |
+```
+
+And then you query it using this module:
+
+```js
+const accountEmails = new DatabaseTable('accountEmails');
+
+// SELECT * FROM account_emails;
+const allRows = await accountEmails.select();
+const row = allRows[0];
+
+console.log(row.addedFromService); // value of `added_from_service`
+
+row.addedFromService = 'Google';
+row.save(); // `added_from_service` is set to 'Google'
+```
+
+</details>
