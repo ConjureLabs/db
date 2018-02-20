@@ -19,9 +19,23 @@ class DatabaseQueryCast extends DatabaseQueryLiteral {
   }
 }
 
-class DatabaseTable {
+const tableOptions = {
+  transformCamelCase: false
+};
+
+module.exports = class DatabaseTable {
   constructor(tableName) {
     this.tableName = this[transformName](tableName);
+  }
+
+  static get options() {
+    return tableOptions;
+  }
+
+  static set options(newOpts) {
+    for (let key in newOpts) {
+      tableOptions[key] = newOpts[key];
+    }
   }
 
   [mapRowInstances](queryResult) {
@@ -32,6 +46,10 @@ class DatabaseTable {
   }
 
   [transformObj](pairs) {
+    if (!DatabaseTable.options.transformCamelCase) {
+      return pairs;
+    }
+
     const result = {};
 
     for (let key in pairs) {
@@ -43,6 +61,10 @@ class DatabaseTable {
   }
 
   [transformName](name) {
+    if (!DatabaseTable.options.transformCamelCase) {
+      return name;
+    }
+
     return name;
   }
 
@@ -274,5 +296,3 @@ function findAllColumnNames(rows) {
 
   return columnNames;
 }
-
-module.exports = DatabaseTable;
