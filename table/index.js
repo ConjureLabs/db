@@ -20,9 +20,10 @@ class DatabaseQueryCast extends DatabaseQueryLiteral {
 }
 
 const upperLettersMatch = /[A-Z]+/g;
+const underscoreMatch = /_+[a-z]/g;
 const tableOptions = {
   transformCamelCase: false,
-  transformer: name => {
+  transformerForSql: name => {
     return name
       .replace(upperLettersMatch, (match, indx, baseString) => {
         const replacement = match.length === 1 ? match :
@@ -35,6 +36,12 @@ const tableOptions = {
         );
       })
       .toLowerCase();
+  },
+  transformerForUser: name => {
+    // expecting lower_snake_cased names form postgres
+    return name.replace(underscoreMatch, match => {
+      return match.substr(-1).toUpperCase();
+    });
   }
 };
 
@@ -56,12 +63,15 @@ module.exports = class DatabaseTable {
   [mapRowInstances](queryResult) {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
+      if (DatabaseTable.options.transformNames) {
+        row = DatabaseTable.options.transformerForUser(row);
+      }
       return new DatabaseRow(this.tableName, row);
     });
   }
 
   [transformObj](pairs) {
-    if (!DatabaseTable.options.transformCamelCase) {
+    if (!DatabaseTable.options.transformNames) {
       return pairs;
     }
 
@@ -80,7 +90,7 @@ module.exports = class DatabaseTable {
       return name;
     }
 
-    return DatabaseTable.options.transformer(name);
+    return DatabaseTable.options.transformForSql(name);
   }
 
   async select(...constraints) {
