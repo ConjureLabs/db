@@ -56,6 +56,10 @@ module.exports = class DatabaseTable {
 
   static set options(newOpts) {
     for (let key in newOpts) {
+      if (tableOptions[key] === undefined) {
+        continue;
+      }
+
       tableOptions[key] = newOpts[key];
     }
   }
