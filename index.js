@@ -1,5 +1,7 @@
 const { Pool } = require('pg');
 
+const DatabaseTable = require('./table');
+
 // these will be set upon connection
 let pool;
 let queryLogger;
@@ -29,10 +31,12 @@ function haveConfig() {
   }
 }
 
-function init(config, logger = function() {}) {
+function init(config, options, logger = function() {}) {
   pool = new Pool(config);
   // if in production, prevent values from being logged
   queryLogger = process.env === 'production' ? sql => logger(sql) : logger;
+  // pass any options to DatabaseTable
+  DatabaseTable.options = options || {};
   haveConfig(); // will flush queue of any pending promises
 }
 module.exports.init = init;

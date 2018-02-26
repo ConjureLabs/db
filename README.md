@@ -26,11 +26,18 @@ All queries will be paused until you pass this config.
 
 Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres), so check that out for more configuration options. Any config passed to `init()` is pushed directly into a `new Pool(...config)`.
 
+You can pass a second arg to `.init` which defines options, for `DatabaseTable`. See [`DatabaseTable`](./table) for more details on options.
+
+```js
+const { init } = require('db');
+init(...config, { transformCamelCase: true }) => { });
+```
+
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
 
 ```js
 const { init } = require('db');
-init(...config, (sql, placeholderValues) => { });
+init(...config, {}, (sql, placeholderValues) => { });
 ```
 
 If in production, `placeholderValues` will not be sent to this method.
