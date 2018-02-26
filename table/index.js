@@ -69,9 +69,7 @@ module.exports = class DatabaseTable {
   [mapRowInstances](queryResult) {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
-      if (DatabaseTable.options.transformCamelCase) {
-        row = this[transformObj](row, snakeToCamelCase);
-      }
+      row = this[transformObj](row, snakeToCamelCase);
       return new DatabaseRow(this.tableName, row);
     });
   }
