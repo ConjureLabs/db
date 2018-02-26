@@ -52,6 +52,34 @@ const { query } = require('db');
 const result = await query('SELECT * FROM users WHERE id = $1', userId);
 ```
 
+If you use the `transformCamelCase` option, and fetch rows via `query`, it will transform the column names, but will set the row instances to a table name of `null`. You can then copy the row result into a new instance, with a given name, before saving changes.
+
+```js
+const result = await query('SELECT * FROM users WHERE id = $1', userId);
+
+const firstRow = result.rows[0]; // DatabaseRow instance, but with no table name set
+
+firstRow.name = 'john';
+
+// firstRow.save() would fail, since no talbe name is set
+
+firstRow = new DatabaseRow('users', firstRow);
+firstRow.save();
+```
+
+If you do not want any name manipulations on query (from set options) you can do:
+
+```js
+const { minimalQuery } = require('db');
+
+// this assumes you ran `init(...config)` already
+
+const result = await minimalQuery('SELECT * FROM users WHERE id = $1', userId);
+
+// transformCamelCase will not be honored in results
+// results will be simple objects, not instances
+```
+
 See further docs, for accessing data:
 
 - [Database Table](./table)

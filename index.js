@@ -41,7 +41,7 @@ function init(config, options, logger = function() {}) {
 }
 module.exports.init = init;
 
-async function query(...args) {
+async function minimalQuery(...args) {
   // pause until connection config is sent in
   await waitForConfig();
 
@@ -54,6 +54,14 @@ async function query(...args) {
 
   client.release();
 
+  return result;
+}
+module.exports.minimalQuery = minimalQuery;
+
+async function query(...args) {
+  const result = await minimalQuery(...args);
+  const noTable = new DatabaseTable(); // no table name defined
+  result.rows = noTable.mapRowInstances(result);
   return result;
 }
 module.exports.query = query;

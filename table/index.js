@@ -49,7 +49,7 @@ const tableOptions = {
 
 module.exports = class DatabaseTable {
   constructor(tableName) {
-    this.tableName = this[transformName](tableName);
+    this.tableName = tableName ? this[transformName](tableName) : tableName;
   }
 
   static get options() {
@@ -66,7 +66,7 @@ module.exports = class DatabaseTable {
     }
   }
 
-  [mapRowInstances](queryResult) {
+  mapRowInstances(queryResult) {
     const DatabaseRow = require('../row');
     return (queryResult.rows || []).map(row => {
       row = this[transformObj](row, snakeToCamelCase);
@@ -106,7 +106,7 @@ module.exports = class DatabaseTable {
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints);
 
     const result = query(`SELECT * FROM ${this.tableName}${whereClause}`, queryValues);
-    return this[mapRowInstances](await result);
+    return this.mapRowInstances(await result);
   }
 
   static async select() {
@@ -125,7 +125,7 @@ module.exports = class DatabaseTable {
     const { whereClause } = generateWhereClause(transformedConstraints, queryValues);
 
     const result = query(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause}`, queryValues);
-    return this[mapRowInstances](await result);
+    return this.mapRowInstances(await result);
   }
 
   static async update() {
@@ -141,7 +141,7 @@ module.exports = class DatabaseTable {
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints);
 
     const result = query(`DELETE FROM ${this.tableName}${whereClause}`, queryValues);
-    return this[mapRowInstances](await result);
+    return this.mapRowInstances(await result);
   }
 
   static async delete() {
@@ -167,7 +167,7 @@ module.exports = class DatabaseTable {
     const { queryValues, valuesFormatted } = generateInsertValues(transformedNewRows, columnNames);
 
     const result = query(`INSERT INTO ${this.tableName}(${columnNames.join(', ')}) VALUES ${valuesFormatted} RETURNING *`, queryValues);
-    return this[mapRowInstances](await result);
+    return this.mapRowInstances(await result);
   }
 
   static async insert() {
@@ -194,7 +194,7 @@ module.exports = class DatabaseTable {
       result = await this.update(transformedUpdateContent, transformedUpdateConstraints);
     }
 
-    return this[mapRowInstances](result);
+    return this.mapRowInstances(result);
   }
 
   static async upsert() {
