@@ -32,11 +32,12 @@ function haveConfig() {
 }
 
 function init(config, options, logger = function() {}) {
-  pool = new Pool(config);
   // if in production, prevent values from being logged
   queryLogger = process.env === 'production' ? sql => logger(sql) : logger;
   // pass any options to DatabaseTable
   DatabaseTable.options = options || {};
+
+  pool = new Pool(config);
   haveConfig(); // will flush queue of any pending promises
 }
 module.exports.init = init;
