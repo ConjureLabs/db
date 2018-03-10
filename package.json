@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/ConjureLabs/db#readme",
   "dependencies": {
-    "err": "github:ConjureLabs/err",
-    "pg": "7.4.1"
+    "err": "github:ConjureLabs/err"
+  },
+  "peerDependencies": {
+    "pg": "^7.4.0"
   },
   "devDependencies": {
     "babel-eslint": "8.0.1",
