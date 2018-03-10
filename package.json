@@ -1,5 +1,5 @@
 {
-  "name": "@conjurelabs/  db",
+  "name": "@conjurelabs/db",
   "version": "0.0.1",
   "description": "classes for easier access and manipulation of postgres data",
   "main": "index.js",
