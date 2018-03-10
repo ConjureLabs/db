@@ -3,14 +3,14 @@
 This class serves a single database row, never more.
 
 ```js
-const DatabaseRow = require('db/row');
+const DatabaseRow = require('db/row')
 
 // row from the account table
 const row = new DatabaseRow('account', {
   id: 1,
   name: 'Johnny Doe',
   // ...
-});
+})
 ```
 
 #### Creating a new row
@@ -19,9 +19,9 @@ const row = new DatabaseRow('account', {
 // no .id in row content
 const row = new DatabaseRow('account', {
   name: 'Johnny Doe'
-});
+})
 
-await row.save();
+await row.save()
 ```
 
 #### Updating an existing row
@@ -31,9 +31,9 @@ await row.save();
 const row = new DatabaseRow('account', {
   id: 1,
   email: 'johnny@doe.site'
-});
+})
 
-await row.save();
+await row.save()
 ```
 
 #### Deleting a row
@@ -42,9 +42,9 @@ await row.save();
 // has .id
 const row = new DatabaseRow('account', {
   id: 1
-});
+})
 
-await row.delete();
+await row.delete()
 ```
 
 After a deletion you cannot make any more modifying calls to the row (like .save).
@@ -60,9 +60,9 @@ const accountRow = new DatabaseRow('account', {
   id: 1,
   name: 'Johnny Doe',
   email: 'johnny@doe.site'
-});
+})
 
-const row2 = accountRow.copy();
+const row2 = accountRow.copy()
 
 /*
   row2 == {
@@ -85,12 +85,12 @@ const accountRow = new DatabaseRow('account', {
   id: 1,
   name: 'Johnny Doe',
   email: 'johnny@doe.site'
-});
+})
 
 // want to modify email and save
 await accountRow
   .set({
     email: 'jdawg@doe.site'
   })
-  .save();
+  .save()
 ```
