@@ -1,4 +1,4 @@
-const { UnexpectedError } = require('err');
+const { UnexpectedError } = require('@conjurelabs/err');
 
 const rowTableName = Symbol(`instance row's table name`);
 const rowDeleted = Symbol('indicator that row was deleted');

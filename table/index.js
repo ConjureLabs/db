@@ -1,4 +1,4 @@
-const { UnexpectedError, ContentError } = require('err');
+const { UnexpectedError, ContentError } = require('@conjurelabs/err');
 
 const mapRowInstances = Symbol('maps query result rows to DatabaseRow instances');
 const staticProxy = Symbol('static method, proxy to instance method');

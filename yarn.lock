@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@conjurelabs/err@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@conjurelabs/err/-/err-0.0.1.tgz#09e78b7f9308909dc88a49fe30b9865471aa824d"
+
 JSV@^4.0.x:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/JSV/-/JSV-4.0.2.tgz#d077f6825571f82132f9dffaed587b4029feff57"
@@ -393,10 +397,6 @@ entities@1.0:
 entities@~1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.1.tgz#6e5c2d0a5621b5dadaecef80b90edfb5cd7772f0"
-
-"err@github:ConjureLabs/err":
-  version "1.0.0"
-  resolved "https://codeload.github.com/ConjureLabs/err/tar.gz/362c12985bdf08dbf24d712d49613beeb6abf222"
 
 escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"

@@ -12,7 +12,7 @@
   "bugs": "https://github.com/ConjureLabs/db/issues",
   "homepage": "https://github.com/ConjureLabs/db#readme",
   "dependencies": {
-    "err": "github:ConjureLabs/err"
+    "@conjurelabs/err": "0.0.1"
   },
   "peerDependencies": {
     "pg": "^7.4.0"
