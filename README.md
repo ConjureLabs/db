@@ -17,7 +17,7 @@ yarn add @conjurelabs/db
 You'll first need to init the db connection, with your own config.
 
 ```js
-require('db').init({
+require('@conjurelabs/db').init({
   user: process.env.PROJECT_DB_USERNAME,
   database: process.env.PROJECT_DB_DATABASE,
   password: process.env.PROJECT_DB_PASSWORD,
@@ -35,14 +35,14 @@ Internally this repo uses [node-postgres](http://github.com/brianc/node-postgres
 You can pass a second arg to `.init` which defines options, for `DatabaseTable`. See [`DatabaseTable`](./table) for more details on options.
 
 ```js
-const { init } = require('db');
+const { init } = require('@conjurelabs/db');
 init(...config, { transformCamelCase: true }) => { });
 ```
 
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
 
 ```js
-const { init } = require('db');
+const { init } = require('@conjurelabs/db');
 init(...config, {}, (sql, placeholderValues) => { });
 ```
 
@@ -51,7 +51,7 @@ If in production, `placeholderValues` will not be sent to this method.
 You can directly query the db (as documented in [node-postgres](http://github.com/brianc/node-postgres)) if you wish.
 
 ```js
-const { query } = require('db');
+const { query } = require('@conjurelabs/db');
 
 // this assumes you ran `init(...config)` already
 
@@ -76,7 +76,7 @@ firstRow.save();
 If you do not want any name manipulations on query (from set options) you can do:
 
 ```js
-const { minimalQuery } = require('db');
+const { minimalQuery } = require('@conjurelabs/db');
 
 // this assumes you ran `init(...config)` already
 
