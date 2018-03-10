@@ -3,7 +3,13 @@
 ### Install
 
 ```sh
-npm install --save db@ConjureLabs/db
+npm install --save @conjurelabs/db
+```
+
+or
+
+```sh
+yarn add @conjurelabs/db
 ```
 
 ### Usage
