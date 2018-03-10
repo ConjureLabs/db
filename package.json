@@ -1,21 +1,16 @@
 {
   "name": "@conjurelabs/db",
   "version": "0.0.1",
-  "description": "classes for easier access and manipulation of postgres data",
+  "description": "Easy and simple access and manipulation of postgres data",
   "main": "index.js",
   "scripts": {
     "lint": "bash ./bash/lint.sh",
     "test": "echo \"Error: no test specified\" && exit 1",
     "publish": "npm publish --access public"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ConjureLabs/db.git"
-  },
+  "repository": "ConjureLabs/db",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ConjureLabs/db/issues"
-  },
+  "bugs": "https://github.com/ConjureLabs/db/issues",
   "homepage": "https://github.com/ConjureLabs/db#readme",
   "dependencies": {
     "err": "github:ConjureLabs/err"
