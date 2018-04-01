@@ -259,13 +259,17 @@ function generateInsertValues(rows, columnNames, queryValues = []) {
   }
 }
 
-function generateSqlKeyVals(separator, dict, valuesArray) {
+function generateSqlKeyVals(separator, dict, valuesArray, whereClause = false) {
   return Object.keys(dict)
     .map(key => {
       const val = dict[key]
 
       if (val instanceof DatabaseQueryLiteral) {
         return `${key} = ${val}`
+      }
+
+      if (whereClause === true && (val === null || val === undefined)) {
+        return `${key} IS NULL`
       }
 
       valuesArray.push(val)
@@ -289,13 +293,13 @@ function generateWhereClause(constraints, queryValues = []) {
   if (constraints.length === 1) {
     return {
       queryValues,
-      whereClause: ' WHERE ' + generateSqlKeyVals(' AND ', constraints[0], queryValues)
+      whereClause: ' WHERE ' + generateSqlKeyVals(' AND ', constraints[0], queryValues, true)
     }
   }
 
   const whereClause = ' WHERE ' + constraints
     .map(constr => {
-      return `(${generateSqlKeyVals(' AND ', constr, queryValues)})`
+      return `(${generateSqlKeyVals(' AND ', constr, queryValues, true)})`
     })
     .join(' OR ')
 
