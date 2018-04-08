@@ -1,9 +1,9 @@
 const { test } = require('ava')
 
 // first init db
-require('./helpers/init')
+require('../helpers/init')
 
-const { query } = require('../')
+const { query } = require('../../')
 
 test('Should return a promise', t => {
   const result = query('SELECT * FROM account LIMIT 1')
