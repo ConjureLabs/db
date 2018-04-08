@@ -184,6 +184,8 @@ const rows2 = await DatabaseTable.delete('account', {
 
 #### Upsert
 
+Upsert will `insert` _only if_ an `update` returns no rows.
+
 <details>
 
 ##### Using Constructor
