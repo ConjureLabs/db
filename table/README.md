@@ -3,7 +3,7 @@
 This classes serves as a proxy to database tables, making it easier to select, insert, etc.
 
 ```js
-const DatabaseTable = require('db/table')
+const { DatabaseTable } = require('@conjurelabs/db')
 ```
 
 #### Select

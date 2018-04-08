@@ -3,7 +3,7 @@
 This class serves a single database row, never more.
 
 ```js
-const DatabaseRow = require('db/row')
+const { DatabaseRow } = require('@conjurelabs/db')
 
 // row from the account table
 const row = new DatabaseRow('account', {

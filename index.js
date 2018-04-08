@@ -1,6 +1,7 @@
 const { Pool } = require('pg')
 
 const DatabaseTable = require('./table')
+const DatabaseRow = require('./row')
 
 // these will be set upon connection
 let pool
@@ -66,3 +67,6 @@ async function query(...args) {
   return result
 }
 module.exports.query = query
+
+module.exports.DatabaseTable = DatabaseTable
+module.exports.DatabaseRow = DatabaseRow
