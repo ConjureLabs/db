@@ -1,5 +1,3 @@
--- this file is only to be used in the dev environment
-
 \c postgres;
 
 -- kick any connections to this database
@@ -20,14 +18,3 @@ $ohyes$;
 
 DROP DATABASE IF EXISTS conjure_db_test;
 CREATE DATABASE conjure_db_test WITH OWNER conjure_db_user;
-\c conjure_db_test;
-
--- table definitions
-\i ./tables/users.sql;
-\i ./tables/movies.sql;
-\i ./tables/user-ratings.sql;
-
--- data
-\i ./rows/users.sql;
-\i ./rows/movies.sql;
-\i ./rows/user-ratings.sql;
