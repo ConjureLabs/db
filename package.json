@@ -1,6 +1,6 @@
 {
   "name": "@conjurelabs/db",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Easy and simple access and manipulation of postgres data",
   "main": "index.js",
   "scripts": {
