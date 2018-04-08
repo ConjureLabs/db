@@ -139,7 +139,7 @@ module.exports = class DatabaseTable {
 
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints)
 
-    const result = query(`DELETE FROM ${this.tableName}${whereClause}`, queryValues)
+    const result = query(`DELETE FROM ${this.tableName}${whereClause} RETURNING *`, queryValues)
     return this.mapRowInstances(await result)
   }
 
