@@ -123,7 +123,7 @@ module.exports = class DatabaseTable {
     const updatesSql = generateSqlKeyVals(', ', transformedUpdates, queryValues)
     const { whereClause } = generateWhereClause(transformedConstraints, queryValues)
 
-    const result = query(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause}`, queryValues)
+    const result = query(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause} RETURNING *`, queryValues)
     return this.mapRowInstances(await result)
   }
 
