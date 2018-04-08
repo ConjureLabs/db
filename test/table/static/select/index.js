@@ -1,20 +1,17 @@
 const { test } = require('ava')
 
 // first init db
-require('../../helpers/init')
+require('../../../helpers/init')
 
-const { DatabaseTable } = require('../../../')
+const { DatabaseTable } = require('../../../../')
 
 test('Should return a promise', t => {
-  const Account = new DatabaseTable('account')
-  const result = Account.select()
+  const result = DatabaseTable.select('account')
   t.true(result instanceof Promise)
 })
 
 test('Should return rows', async t => {
-  const AccountRating = new DatabaseTable('account_rating')
-
-  const rows = await AccountRating.select({
+  const rows = await DatabaseTable.select('account_rating', {
     id: 1
   })
   t.is(rows.length, 1)
@@ -25,7 +22,7 @@ test('Should return rows', async t => {
   t.is(row.rating, 'terrible')
   t.is(row.review, 'this movie was just garbage')
 
-  const rows2 = await AccountRating.select({
+  const rows2 = await DatabaseTable.select('account_rating', {
     id: 13
   })
   t.is(rows2.length, 1)
@@ -38,9 +35,7 @@ test('Should return rows', async t => {
 })
 
 test('Should return rows', async t => {
-  const AccountRating = new DatabaseTable('account_rating')
-
-  const rows = await AccountRating.select({
+  const rows = await DatabaseTable.select('account_rating', {
     rating: 'terrible'
   })
   t.is(rows.length, 5)
