@@ -31,3 +31,25 @@ test('Should return rows', async t => {
   t.is(row2.rating, 'awesome')
   t.is(row2.review, null)
 })
+
+test('should take in args', async t => {
+  const result = await query(`
+    SELECT ar.*, a.*, m.*
+    FROM account_rating ar
+    LEFT JOIN account a
+      ON ar.account_id = a.id
+    LEFT JOIN movie m
+      ON ar.movie_id = m.id
+    WHERE a.id = $1
+    AND m.id = $2
+  `, [1, 4])
+
+  t.truthy(result && result.rows)
+  t.is(result.rows.length, 1)
+  const row = result.rows[0]
+  t.is(row.rating, 'terrible')
+  t.is(row.account_id, 1)
+  t.is(row.movie_id, 4)
+  t.is(row.director, 'Rod Amateau')
+  t.is(row.review, 'pure nightmares')
+})
