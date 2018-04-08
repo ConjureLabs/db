@@ -36,14 +36,16 @@ You can pass a second arg to `.init` which defines options, for `DatabaseTable`.
 
 ```js
 const { init } = require('@conjurelabs/db')
-init(...config, { transformCamelCase: true }) => { })
+init(...config, { transformCamelCase: true })
 ```
 
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
 
 ```js
 const { init } = require('@conjurelabs/db')
-init(...config, {}, (sql, placeholderValues) => { })
+init(...config, {}, (sql, placeholderValues) => {
+  console.log(sql, placeholderValues)
+})
 ```
 
 If in production, `placeholderValues` will not be sent to this method.

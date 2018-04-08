@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "bash ./bash/lint.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bash ./bash/test.sh"
   },
   "repository": "ConjureLabs/db",
   "license": "MIT",
@@ -18,8 +18,10 @@
     "pg": "^7.4.0"
   },
   "devDependencies": {
+    "ava": "0.25.0",
     "babel-eslint": "8.0.1",
     "eslint": "4.10.0",
-    "jscs": "3.0.7"
+    "jscs": "3.0.7",
+    "pg": "^7.4.0"
   }
 }
