@@ -175,25 +175,18 @@ module.exports = class DatabaseTable {
 
   async upsert(insertContent, updateContent, updateConstraints) {
     // transformations
-    const transformedInsertContent = this[transformObj](insertContent)
+    const transformedUpdateContent = this[transformObj](updateContent)
+    const transformedUpdateConstraints = this[transformObj](updateConstraints)
 
-    let result
+    let result = await this.update(transformedUpdateContent, transformedUpdateConstraints)
 
-    try {
-      result = await this.insert(transformedInsertContent)
-    } catch(err) {
-      if (typeof err.message !== 'string' || err.message.substr(0, 13) !== 'duplicate key') {
-        throw err
-      }
-
-      // transformations
-      const transformedUpdateContent = this[transformObj](updateContent)
-      const transformedUpdateConstraints = this[transformObj](updateConstraints)
-
-      result = await this.update(transformedUpdateContent, transformedUpdateConstraints)
+    if (result.length) {
+      return result
     }
 
-    return this.mapRowInstances(result)
+    // transformations
+    const transformedInsertContent = this[transformObj](insertContent)
+    return await this.insert(transformedInsertContent)
   }
 
   static async upsert() {
