@@ -66,7 +66,7 @@ module.exports = class DatabaseTable {
   }
 
   mapRowInstances(queryResult) {
-    const DatabaseRow = require('../row')
+    const { DatabaseRow } = require('./')
     return (queryResult.rows || []).map(row => {
       row = this[transformObj](row, snakeToCamelCase)
       return new DatabaseRow(this.tableName, row)
@@ -100,7 +100,7 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('../')
+    const { query } = require('./')
 
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints)
 
@@ -117,7 +117,7 @@ module.exports = class DatabaseTable {
     const transformedUpdates = this[transformObj](updates)
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('../')
+    const { query } = require('./')
 
     const queryValues = []
     const updatesSql = generateSqlKeyVals(', ', transformedUpdates, queryValues)
@@ -135,7 +135,7 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('../')
+    const { query } = require('./')
 
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints)
 
@@ -151,7 +151,7 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedNewRows = newRows.map(row => this[transformObj](row))
 
-    const { query } = require('../')
+    const { query } = require('./')
 
     if (!transformedNewRows.length) {
       throw new UnexpectedError('There were no rows to insert')

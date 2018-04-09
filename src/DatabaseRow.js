@@ -24,7 +24,7 @@ module.exports = class DatabaseRow {
       throw new UnexpectedError('This row was previously deleted')
     }
 
-    const DatabaseTable = require('../table')
+    const { DatabaseTable } = require('./')
 
     // no .id, assuming it's a new row to insert
     if (this.id === undefined) {
@@ -65,7 +65,7 @@ module.exports = class DatabaseRow {
       throw new UnexpectedError('Exepected row .id to exist, for deletion')
     }
 
-    const DatabaseTable = require('../table')
+    const { DatabaseTable } = require('./')
     await DatabaseTable.delete(this[rowTableName], {
       id: this.id
     })

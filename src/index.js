@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 
-const DatabaseTable = require('./table')
-const DatabaseRow = require('./row')
+const DatabaseTable = require('./DatabaseTable')
+const DatabaseRow = require('./DatabaseRow')
 
 // these will be set upon connection
 let pool
