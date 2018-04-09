@@ -7,6 +7,9 @@
     "lint": "bash ./bash/lint.sh",
     "test": "bash ./bash/test.sh"
   },
+  "files": [
+    "src"
+  ],
   "repository": "ConjureLabs/db",
   "license": "MIT",
   "bugs": "https://github.com/ConjureLabs/db/issues",
