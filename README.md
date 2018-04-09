@@ -88,8 +88,6 @@ const result = await minimalQuery('SELECT * FROM users WHERE id = $1', userId)
 // results will be simple objects, not instances
 ```
 
-See further docs, for accessing data:
-
 ## DatabaseTable
 
 ### Select
