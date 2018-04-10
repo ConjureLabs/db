@@ -93,7 +93,9 @@ module.exports = class DatabaseTable {
             this[newKey] = val
           },
 
-          enumerable: false
+          enumerable: false,
+
+          configurable: false
         })
       }
 

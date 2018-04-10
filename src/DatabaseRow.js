@@ -11,6 +11,26 @@ module.exports = class DatabaseRow {
     for (let key in rowData) {
       this[key] = rowData[key]
     }
+
+    // getting getters & setters, adding them back in
+    const descriptors = Object.getOwnPropertyDescriptors(rowData)
+    const descriptorKeys = Object.keys(descriptors)
+    const enumerableKeys = Object.keys(rowData)
+    for (let i = 0; i < descriptorKeys.length; i++) {
+      const key = descriptorKeys[i]
+      const descriptor = descriptors[key]
+
+      if (enumerableKeys.includes(key) || !(
+        descriptor.get &&
+        descriptor.set &&
+        descriptor.enumerable === false &&
+        descriptor.configurable === false
+      )) {
+        continue
+      }
+
+      Object.defineProperty(this, key, descriptor)
+    }
   }
 
   /*
