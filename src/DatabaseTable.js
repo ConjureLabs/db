@@ -83,6 +83,8 @@ module.exports = class DatabaseTable {
     for (let key in pairs) {
       const newKey = this[transformName](key, transformerUsed)
 
+      result[newKey] = pairs[key]
+
       if (key !== newKey) {
         Object.defineProperty(result, key, {
           get: function() {
@@ -98,8 +100,6 @@ module.exports = class DatabaseTable {
           configurable: false
         })
       }
-
-      result[newKey] = pairs[key]
     }
 
     return result
@@ -117,11 +117,11 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('./')
+    const { queryRaw } = require('./')
 
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints)
 
-    const result = query(`SELECT * FROM ${this.tableName}${whereClause}`, queryValues)
+    const result = queryRaw(`SELECT * FROM ${this.tableName}${whereClause}`, queryValues)
     return this.mapRowInstances(await result)
   }
 
@@ -134,13 +134,13 @@ module.exports = class DatabaseTable {
     const transformedUpdates = this[transformObj](updates)
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('./')
+    const { queryRaw } = require('./')
 
     const queryValues = []
     const updatesSql = generateSqlKeyVals(', ', transformedUpdates, queryValues)
     const { whereClause } = generateWhereClause(transformedConstraints, queryValues)
 
-    const result = query(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause} RETURNING *`, queryValues)
+    const result = queryRaw(`UPDATE ${this.tableName} SET ${updatesSql}${whereClause} RETURNING *`, queryValues)
     return this.mapRowInstances(await result)
   }
 
@@ -152,11 +152,11 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedConstraints = constraints.map(obj => this[transformObj](obj))
 
-    const { query } = require('./')
+    const { queryRaw } = require('./')
 
     const { queryValues, whereClause } = generateWhereClause(transformedConstraints)
 
-    const result = query(`DELETE FROM ${this.tableName}${whereClause} RETURNING *`, queryValues)
+    const result = queryRaw(`DELETE FROM ${this.tableName}${whereClause} RETURNING *`, queryValues)
     return this.mapRowInstances(await result)
   }
 
@@ -168,7 +168,7 @@ module.exports = class DatabaseTable {
     // transformations
     const transformedNewRows = newRows.map(row => this[transformObj](row))
 
-    const { query } = require('./')
+    const { queryRaw } = require('./')
 
     if (!transformedNewRows.length) {
       throw new UnexpectedError('There were no rows to insert')
@@ -182,7 +182,7 @@ module.exports = class DatabaseTable {
 
     const { queryValues, valuesFormatted } = generateInsertValues(transformedNewRows, columnNames)
 
-    const result = query(`INSERT INTO ${this.tableName}(${columnNames.join(', ')}) VALUES ${valuesFormatted} RETURNING *`, queryValues)
+    const result = queryRaw(`INSERT INTO ${this.tableName}(${columnNames.join(', ')}) VALUES ${valuesFormatted} RETURNING *`, queryValues)
     return this.mapRowInstances(await result)
   }
 

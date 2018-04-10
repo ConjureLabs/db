@@ -68,5 +68,10 @@ async function query(...args) {
 }
 module.exports.query = query
 
+async function queryRaw(...args) {
+  return await minimalQuery(...args)
+}
+module.exports.queryRaw = queryRaw
+
 module.exports.DatabaseTable = DatabaseTable
 module.exports.DatabaseRow = DatabaseRow

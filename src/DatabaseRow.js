@@ -2,12 +2,17 @@ const { UnexpectedError } = require('@conjurelabs/err')
 
 const rowTableName = Symbol(`instance row's table name`)
 const rowDeleted = Symbol('indicator that row was deleted')
+const carryData = Symbol('carry row data')
 
 module.exports = class DatabaseRow {
   constructor(tableName, rowData = {}) {
     this[rowTableName] = tableName
     this[rowDeleted] = false
 
+    this[carryData](rowData)
+  }
+
+  [carryData](rowData) {
     for (let key in rowData) {
       this[key] = rowData[key]
     }
@@ -58,9 +63,7 @@ module.exports = class DatabaseRow {
         throw new UnexpectedError('Expected DatabaseTable.insert to return a single new table row')
       }
 
-      for (let key in rows[0]) {
-        this[key] = rows[0][key]
-      }
+      this[carryData](rows[0])
 
       return this
     }
@@ -96,9 +99,10 @@ module.exports = class DatabaseRow {
 
   // new row object, copies values, but without id
   copy() {
-    return new DatabaseRow(this[rowTableName], Object.assign({}, this, {
-      id: null
-    }))
+    const copy = new DatabaseRow(this[rowTableName])
+    copy[carryData](this)
+    copy.id = null
+    return copy
   }
 
   // useful for chaining
