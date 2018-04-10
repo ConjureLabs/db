@@ -82,6 +82,21 @@ module.exports = class DatabaseTable {
 
     for (let key in pairs) {
       const newKey = this[transformName](key, transformerUsed)
+
+      if (key !== newKey) {
+        Object.defineProperty(result, key, {
+          get: function() {
+            return this[newKey]
+          },
+
+          set: function(val) {
+            this[newKey] = val
+          },
+
+          enumerable: false
+        })
+      }
+
       result[newKey] = pairs[key]
     }
 
