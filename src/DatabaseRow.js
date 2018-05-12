@@ -13,7 +13,7 @@ module.exports = class DatabaseRow {
   }
 
   [carryData](rowData) {
-    for (let key in rowData) {
+    for (const key in rowData) {
       this[key] = rowData[key]
     }
 
@@ -21,8 +21,7 @@ module.exports = class DatabaseRow {
     const descriptors = Object.getOwnPropertyDescriptors(rowData)
     const descriptorKeys = Object.keys(descriptors)
     const enumerableKeys = Object.keys(rowData)
-    for (let i = 0; i < descriptorKeys.length; i++) {
-      const key = descriptorKeys[i]
+    for (const key of descriptorKeys) {
       const descriptor = descriptors[key]
 
       if (enumerableKeys.includes(key) || !(
@@ -107,7 +106,7 @@ module.exports = class DatabaseRow {
 
   // useful for chaining
   set(data) {
-    for (let key in data) {
+    for (const key in data) {
       this[key] = data[key]
     }
 
