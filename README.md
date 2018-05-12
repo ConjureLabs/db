@@ -12,6 +12,12 @@ or
 yarn add @conjurelabs/db
 ```
 
+## About
+
+This module is meant to ease development with a super-simple layer for postgres. The `query` method should be used for anything more complex than a simple operation.
+
+Logic in this module assumes that every table has `id SERIAL PRIMARY KEY`. This logic is used to determine if a record's `.save` should `INSERT` or `UPDATE`.
+
 ## Usage
 
 You'll first need to init the db connection, with your own config.
