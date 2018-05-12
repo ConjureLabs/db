@@ -3,21 +3,21 @@ const { test } = require('ava')
 // first init db
 require('../../../helpers/init/with-transform-camel-case')
 
-const { DatabaseTable, query } = require('../../../../')
+const { DatabaseTable } = require('../../../../')
 const generateTableName = require('../../../helpers/generate-table')
 const truncateTable = require('../../../helpers/truncate-table')
 
 // setup tmp table
 let tableName
 let tableNameCamelCased
-test.before(async t => {
+test.before(async () => {
   const names = await generateTableName()
   tableName = names.tableName
   tableNameCamelCased = names.tableNameCamelCased
 })
 
 // wipe tmp table before each test
-test.beforeEach(async t => {
+test.beforeEach(async () => {
   await truncateTable(tableName)
   await DatabaseTable.insert(tableName, {
     name: 'asdf',

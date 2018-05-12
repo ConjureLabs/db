@@ -9,10 +9,10 @@ const truncateTable = require('../../../helpers/truncate-table')
 
 // setup tmp table
 let tableName
-test.before(async t => tableName = (await generateTableName()).tableName)
+test.before(async () => tableName = (await generateTableName()).tableName)
 
 // wipe tmp table before each test
-test.beforeEach(async t => {
+test.beforeEach(async () => {
   await truncateTable(tableName)
 })
 

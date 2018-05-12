@@ -1,6 +1,6 @@
 const { exec } = require('child_process')
 
-let i = 0;
+let i = 0
 
 module.exports = () => {
   return new Promise((resolve, reject) => {
