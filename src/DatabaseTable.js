@@ -215,6 +215,9 @@ module.exports = class DatabaseTable {
     const tableName = args.shift()
 
     if (typeof tableName !== 'string') {
+      if (methodName == undefined) {
+        throw new ContentError(`DatabaseTable.${methodName} requires the first argument to be a table name - instance may be from a .query which requires .tableName to be set explicitly on results`)
+      }
       throw new ContentError(`DatabaseTable.${methodName} requires the first argument to be a table name`)
     }
 
