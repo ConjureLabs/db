@@ -43,7 +43,7 @@ function snakeToCamelCase(name) {
 }
 
 const tableOptions = {
-  transformCamelCase: false
+  transformCamelCase: true
 }
 
 module.exports = class DatabaseTable {
