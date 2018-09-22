@@ -23,7 +23,7 @@ test('Should return rows', async t => {
   t.is(row.rating, 'terrible')
   t.is(row.review, 'this movie was just garbage')
 
-  const result2 = await query('SELECT * FROM accountRating WHERE id = 13')
+  const result2 = await query('SELECT * FROM account_rating WHERE id = 13')
   t.truthy(result2 && result2.rows)
   t.is(result2.rows.length, 1)
   const row2 = result2.rows[0]
