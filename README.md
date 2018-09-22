@@ -8,12 +8,6 @@
 npm install --save @conjurelabs/db
 ```
 
-or
-
-```sh
-yarn add @conjurelabs/db
-```
-
 ## About
 
 This module is meant to ease development with a super-simple layer for postgres. The `query` method should be used for anything more complex than a simple operation.
