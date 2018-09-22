@@ -1,4 +1,4 @@
-const { test } = require('ava')
+const test = require('ava')
 
 // first init db
 require('../../../helpers/init')
@@ -16,13 +16,13 @@ test.beforeEach(async () => {
   await truncateTable(tableName)
   await DatabaseTable.insert(tableName, {
     name: 'asdf',
-    has_something: true
+    hasSomething: true
   }, {
     name: 'foo',
     has_something: true
   }, {
     name: 'bar',
-    has_something: false
+    hasSomething: false
   }, {
     name: 'xyz',
     has_something: true
@@ -43,7 +43,7 @@ test('Should delete a row', async t => {
   t.is(rows.length, 1)
 
   await DatabaseTable.delete(tableName, {
-    has_something: false
+    hasSomething: false
   })
   const rows2 = await DatabaseTable.select(tableName, {
     has_something: false
@@ -77,13 +77,13 @@ test('Should delete multiple', async t => {
   t.is(initialRows.length, 3)
 
   const rows = await DatabaseTable.delete(tableName, {
-    has_something: true
+    hasSomething: true
   })
   t.true(Array.isArray(rows))
   t.is(rows.length, 3)
 
   const finalRows = await DatabaseTable.select(tableName, {
-    has_something: true
+    hasSomething: true
   })
   t.is(finalRows.length, 0)
 })

@@ -1,4 +1,4 @@
-const { test } = require('ava')
+const test = require('ava')
 
 // first init db
 require('../helpers/init')
