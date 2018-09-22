@@ -1,4 +1,4 @@
-const { test } = require('ava')
+const test = require('ava')
 
 // first init db
 require('../../../helpers/init')
@@ -22,10 +22,10 @@ test.beforeEach(async () => {
     has_something: true
   }, {
     name: 'bar',
-    has_something: false
+    hasSomething: false
   }, {
     name: 'xyz',
-    has_something: true
+    hasSomething: true
   })
 })
 
@@ -33,19 +33,19 @@ test('Should return a promise', t => {
   const result = DatabaseTable.update(tableName, {
     has_something: true
   }, {
-    has_something: false
+    hasSomething: false
   })
   t.true(result instanceof Promise)
 })
 
 test('Should update a row', async t => {
   const rows = await DatabaseTable.select(tableName, {
-    has_something: false
+    hasSomething: false
   })
   t.is(rows.length, 1)
 
   await DatabaseTable.update(tableName, {
-    has_something: true
+    hasSomething: true
   }, {
     has_something: false
   })
@@ -57,7 +57,7 @@ test('Should update a row', async t => {
 
 test('Should return newly updated rows', async t => {
   const initialRows = await DatabaseTable.select(tableName, {
-    has_something: false
+    hasSomething: false
   })
   t.is(initialRows.length, 1)
 
@@ -68,7 +68,7 @@ test('Should return newly updated rows', async t => {
   })
 
   const finalRows = await DatabaseTable.select(tableName, {
-    has_something: false
+    hasSomething: false
   })
   t.is(finalRows.length, 0)
 
@@ -83,9 +83,9 @@ test('Should update multiple', async t => {
   t.is(initialRows.length, 3)
 
   const rows = await DatabaseTable.update(tableName, {
-    has_something: false
+    hasSomething: false
   }, {
-    has_something: true
+    hasSomething: true
   })
   t.true(Array.isArray(rows))
   t.is(rows.length, 3)

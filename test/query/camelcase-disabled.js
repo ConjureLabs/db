@@ -1,7 +1,7 @@
 const test = require('ava')
 
 // first init db
-require('../helpers/init')
+require('../helpers/init/without-transform-camel-case')
 
 const { query } = require('../../')
 
@@ -16,10 +16,10 @@ test('Should return rows', async t => {
   t.is(result.rows.length, 1)
   const row = result.rows[0]
   t.is(row.id, 1)
-  t.is(row.accountId, 1)
   t.is(row.account_id, 1)
-  t.is(row.movieId, 1)
+  t.true(!row.accountId)
   t.is(row.movie_id, 1)
+  t.true(!row.movieId)
   t.is(row.rating, 'terrible')
   t.is(row.review, 'this movie was just garbage')
 
@@ -28,10 +28,10 @@ test('Should return rows', async t => {
   t.is(result2.rows.length, 1)
   const row2 = result2.rows[0]
   t.is(row2.id, 13)
-  t.is(row2.accountId, 8)
   t.is(row2.account_id, 8)
-  t.is(row2.movieId, 1)
+  t.true(!row2.accountId)
   t.is(row2.movie_id, 1)
+  t.true(!row2.movieId)
   t.is(row2.rating, 'awesome')
   t.is(row2.review, null)
 })
@@ -52,10 +52,10 @@ test('should take in args', async t => {
   t.is(result.rows.length, 1)
   const row = result.rows[0]
   t.is(row.rating, 'terrible')
-  t.is(row.accountId, 1)
   t.is(row.account_id, 1)
-  t.is(row.movieId, 4)
+  t.true(!row.accountId)
   t.is(row.movie_id, 4)
+  t.true(!row.movieId)
   t.is(row.director, 'Rod Amateau')
   t.is(row.review, 'pure nightmares')
 })

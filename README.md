@@ -1,5 +1,7 @@
 # Database classes, for Postgres
 
+[![CircleCI](https://circleci.com/gh/ConjureLabs/db/tree/master.svg?style=svg)](https://circleci.com/gh/ConjureLabs/db/tree/master)
+
 ## Install
 
 ```sh
@@ -42,7 +44,7 @@ You can pass a second arg to `.init` which defines options, for `DatabaseTable`.
 
 ```js
 const { init } = require('@conjurelabs/db')
-init(...config, { transformCamelCase: true })
+init(...config, { transformCamelCase: false })
 ```
 
 If you want, you can pass a function that is triggered on every query. This can be used to set up reporting, or debug logs.
@@ -66,7 +68,7 @@ const { query } = require('@conjurelabs/db')
 const result = await query('SELECT * FROM users WHERE id = $1', userId)
 ```
 
-If you use the `transformCamelCase` option, and fetch rows via `query`, it will transform the column names, but will set the row instances to a table name of `null`. You can then copy the row result into a new instance, with a given name, before saving changes.
+Unless you disable the `transformCamelCase` option, when you fetch rows via `query`, it will transform the column names, but will set the row instances to a table name of `null`. You can then copy the row result into a new instance, with a given name, before saving changes.
 
 ```js
 const result = await query('SELECT * FROM users WHERE id = $1', userId)
@@ -337,7 +339,7 @@ You can update options in a similar fashion.
 
 ```js
 DatabaseTable.options = {
-  transformCamelCase: true
+  transformCamelCase: false
 }
 ```
 
@@ -347,11 +349,11 @@ Note that this will only alter the option attributes you supply (it does not rep
 
 Postgres table and column names look like this: `account_emails_by_date`. If you're like me, you typically set a var equal to `accountEmailsByDate` when working off of a table, but then have to convert it back to snake-cased when passing it back in.
 
-You can have this module auto-transform names for you, to make life easier.
+This module converts camel case names automatically. You can disable that, if you want, via:
 
 ```js
 DatabaseTable.options = {
-  transformCamelCase: true
+  transformCamelCase: false
 }
 ```
 
