@@ -1,5 +1,7 @@
 # Database classes, for Postgres
 
+[![CircleCI](https://circleci.com/gh/ConjureLabs/db/tree/master.svg?style=svg)](https://circleci.com/gh/ConjureLabs/db/tree/master)
+
 ## Install
 
 ```sh
