@@ -15,17 +15,16 @@
   "bugs": "https://github.com/ConjureLabs/db/issues",
   "homepage": "https://github.com/ConjureLabs/db#readme",
   "dependencies": {
-    "@conjurelabs/err": "0.0.2"
+    "@conjurelabs/err": "1.0.1"
   },
   "peerDependencies": {
-    "pg": "^7.4.0"
+    "pg": ">=7.12.1"
   },
   "devDependencies": {
     "@babel/register": "7.5.5",
     "ava": "2.3.0",
-    "babel-eslint": "8.0.1",
-    "eslint": "4.10.0",
-    "jscs": "3.0.7",
-    "pg": "^7.4.0"
+    "babel-eslint": "10.0.3",
+    "eslint": "6.2.2",
+    "pg": "7.12.1"
   }
 }
