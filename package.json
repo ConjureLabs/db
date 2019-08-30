@@ -5,7 +5,7 @@
   "main": "./src",
   "scripts": {
     "lint": "bash ./bash/lint.sh",
-    "test": "bash ./bash/test.sh"
+    "test": "bash ./bash/test-setup.sh && ava -s"
   },
   "files": [
     "src"
@@ -21,7 +21,8 @@
     "pg": "^7.4.0"
   },
   "devDependencies": {
-    "ava": "1.0.0-beta.8",
+    "@babel/register": "7.5.5",
+    "ava": "2.3.0",
     "babel-eslint": "8.0.1",
     "eslint": "4.10.0",
     "jscs": "3.0.7",

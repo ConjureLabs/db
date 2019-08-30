@@ -1,6 +1,6 @@
-const { exec } = require('child_process')
+import { exec } from 'child_process'
 
-module.exports = tableName => {
+export default tableName => {
   return new Promise((resolve, reject) => {
     exec(`bash ./truncate-table.sh ${tableName}`, {
       cwd: __dirname

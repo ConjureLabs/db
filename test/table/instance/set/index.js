@@ -1,9 +1,9 @@
-const test = require('ava')
+import test from 'ava'
 
 // first init db
-require('../../../helpers/init')
+import '../../../helpers/init'
 
-const { DatabaseTable } = require('../../../../')
+import { DatabaseTable } from '../../../../'
 
 test('instance.set should change instance values', async t => {
   const Director = new DatabaseTable('director')

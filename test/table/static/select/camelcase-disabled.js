@@ -1,9 +1,9 @@
-const test = require('ava')
+import test from 'ava'
 
 // first init db
-require('../../../helpers/init/without-transform-camel-case')
+import '../../../helpers/init/without-transform-camel-case'
 
-const { DatabaseTable } = require('../../../../')
+import { DatabaseTable } from '../../../../'
 
 test('Should return a promise', t => {
   const result = DatabaseTable.select('account_rating')

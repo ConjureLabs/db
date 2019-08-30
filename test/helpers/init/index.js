@@ -1,4 +1,4 @@
-const { init } = require('../../../')
-const config = require('./config')
+import { init } from '../../../'
+import config from './config'
 
 init(config)

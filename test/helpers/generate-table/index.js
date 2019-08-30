@@ -1,8 +1,8 @@
-const { exec } = require('child_process')
+import { exec } from 'child_process'
 
 let i = 0
 
-module.exports = () => {
+export default () => {
   return new Promise((resolve, reject) => {
     const tableName = `tmp_table_number${++i}`
     const tableNameCamelCased = `tmpTableNumber${i}`

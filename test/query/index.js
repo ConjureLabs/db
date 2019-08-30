@@ -1,9 +1,9 @@
-const test = require('ava')
+import test from 'ava'
 
 // first init db
-require('../helpers/init')
+import '../helpers/init'
 
-const { query } = require('../../')
+import { query } from '../../'
 
 test('Should return a promise', t => {
   const result = query('SELECT * FROM account LIMIT 1')

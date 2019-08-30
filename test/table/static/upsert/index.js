@@ -1,11 +1,11 @@
-const test = require('ava')
+import test from 'ava'
 
 // first init db
-require('../../../helpers/init')
+import '../../../helpers/init'
 
-const { DatabaseTable } = require('../../../../')
-const generateTableName = require('../../../helpers/generate-table')
-const truncateTable = require('../../../helpers/truncate-table')
+import { DatabaseTable } from '../../../../'
+import generateTableName from '../../../helpers/generate-table'
+import truncateTable from '../../../helpers/truncate-table'
 
 // setup tmp table
 let tableName

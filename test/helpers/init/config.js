@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   user: 'conjure_db_user',
   database: 'conjure_db_test',
   password: '$@ $3cr3t',
