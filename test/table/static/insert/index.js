@@ -3,7 +3,7 @@ import test from 'ava'
 // first init db
 import '../../../helpers/init'
 
-import { DatabaseTable } from '../../../../'
+import { DatabaseTable, query } from '../../../../'
 import generateTableName from '../../../helpers/generate-table'
 import truncateTable from '../../../helpers/truncate-table'
 
